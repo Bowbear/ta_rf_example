@@ -17,8 +17,8 @@ ${OUTPUT_DIR} =    rf/output
 # -- System
 #------------------
 ${FIREFOX_PATH} =  C:/Program Files/Mozilla Firefox/firefox.exe
-# ${HOST} =  %{COMPUTERNAME}
-# ${USER} =  %{USERNAME}
+${HOST} =  %{COMPUTERNAME}
+${USER} =  %{USERNAME}
 
 #------------------
 # -- Userdata

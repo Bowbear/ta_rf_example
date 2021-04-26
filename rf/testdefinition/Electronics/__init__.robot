@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    Running all test cases for Computers
+Documentation    Running all test cases for Electronics
 
 Resource    ..${/}..${/}resource${/}Configuration.robot
 

@@ -21,26 +21,21 @@ Click on "Desktops" header link
     click link    ${COMP_DESKT_HDR_LNK}
 
 Click on "Desktops" image link
-    element should be visible    ${COMP_HEADER}
     wait until element is visible    ${COMP_DESKT_IMG_LNK}    10s
     click link    ${COMP_DESKT_IMG_LNK}
 
 Click on "Notebooks" header link
-    element should be visible    ${COMP_HEADER}
     wait until element is visible    ${COMP_NOTEB_HDR_LNK}    10s
     click link    ${COMP_NOTEB_HDR_LNK}
 
 Click on "Notebooks" image link
-    element should be visible    ${COMP_HEADER}
     wait until element is visible    ${COMP_NOTEB_IMG_LNK}    10s
     click link    ${COMP_NOTEB_IMG_LNK}
 
 Click on "Software" header link
-    element should be visible    ${COMP_HEADER}
     wait until element is visible    ${COMP_SOFTW_HDR_LNK}    10s
     click link    ${COMP_SOFTW_HDR_LNK}
 
 Click on "SOftware" image link
-    element should be visible    ${COMP_HEADER}
     wait until element is visible    ${COMP_SOFTW_IMG_LNK}    10s
     click link    ${COMP_SOFTW_IMG_LNK}

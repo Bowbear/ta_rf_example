@@ -19,12 +19,11 @@ Test Teardown    End Web Test
 
 Testing of direct link "Computer" to "Desktops" without login
     [Documentation]    Test direct link "Computer" to "Desktops"
-    [Tags]    Smoke
+    [Tags]    Smoke    TA2-5
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open
     I choose the "Desktop" option via header link
     I verify if "Desktops" page is open
-    sleep    3s
 
 # Testing pop up link "Computer" to "Desktop"

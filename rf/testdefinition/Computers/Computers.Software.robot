@@ -19,12 +19,11 @@ Test Teardown    End Web Test
 
 Testing of direct link "Computer" to "Software" without login
     [Documentation]    Test direct link "Computer" to "Software"
-    [Tags]    Smoke
+    [Tags]    Smoke    TA2-7
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open
     I choose the "Software" option via header link
     I verify if "Software" page is open
-    sleep    3s
 
 # Testing pop up link "Computer" to "Software"

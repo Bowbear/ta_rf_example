@@ -7,10 +7,17 @@ Library    SeleniumLibrary
 ${HOME_REGIST_LINK} =       xpath=//a[text()="Register"]
 ${HOME_LOGIN_LINK} =        xpath=//a[text()="Log in"]
 ${HOME_COMPUTERS_LINK} =    xpath=//ul[@class="top-menu notmobile"]//a[text()="Computers "]    # for not mobile devices
-${HOME_DESKTOPS_LINK} =     xpath=//ul[@class="top-menu notmobile"]//a[text()="Desktops "]
-${HOME_NOTEBOOKS_LINK} =    xpath=//ul[@class="top-menu notmobile"]//a[text()="Notebooks "]
-${HOME_SOFTWARE_LINK} =     xpath=//ul[@class="top-menu notmobile"]//a[text()="Software "]
-
+${HOME_COMP_DESKT_LINK} =   xpath=//ul[@class="top-menu notmobile"]//a[text()="Desktops "]
+${HOME_COMP_NOTEB_LINK} =   xpath=//ul[@class="top-menu notmobile"]//a[text()="Notebooks "]
+${HOME_COMP_SOFTW_LINK} =   xpath=//ul[@class="top-menu notmobile"]//a[text()="Software "]
+${HOME_ELECTRONICS_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Electronics "]
+${HOME_ELECT_CANPH_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Camera & photo "]
+${HOME_ELECT_CELLP_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Cell phones "]
+${HOME_ELECT_OTHER_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Others "]
+${HOME_APPAREL_LINK} =      xpath=//ul[@class="top-menu notmobile"]//a[text()="Apparel "]
+${HOME_APPAR_SHOES_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Shoes "]
+${HOME_APPAR_CLOTH_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Clothing "]
+${HOME_APPAR_ACCES_LINK} =  xpath=//ul[@class="top-menu notmobile"]//a[text()="Accessories "]
 
 *** Keywords ***
 Open
@@ -29,7 +36,15 @@ Select "Computers"
     wait until element is visible    ${HOME_COMPUTERS_LINK}    10s
     click link    ${HOME_COMPUTERS_LINK}
 
+Select "Electronics"
+    wait until element is visible    ${HOME_ELECTRONICS_LINK}    10s
+    click link    ${HOME_ELECTRONICS_LINK}
+
+Select "Apparel"
+    wait until element is visible    ${HOME_APPAREL_LINK}    10s
+    click link    ${HOME_APPAREL_LINK}
+
 Select "Desktops" via "Computers"
     wait until element is visible    ${HOME_COMPUTERS_LINK}    10s
     mouse over    ${HOME_COMPUTERS_LINK}
-    click link    ${HOME_DESKTOPS_LINK}
+    click link    ${HOME_COMP_DESKT_LINK}

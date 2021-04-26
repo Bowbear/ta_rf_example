@@ -20,4 +20,7 @@ I click in "Login"
 I click on "Computers" directly
     Home.Select "Computers"
 
-I hover over "Computers" to "Desktop"
+# I hover over "Computers" to "Desktop"
+
+I click on "Electronics" directly
+    Home.Select "Electronics"
