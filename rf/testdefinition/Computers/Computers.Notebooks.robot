@@ -12,7 +12,7 @@ Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
-# Befehl:
+# Command:
 # robot -d rf/results/Computers/Notebooks -L TRACE rf/testdefinition/Computers/Computers.Notebooks.robot
 
 *** Test Cases ***
