@@ -19,7 +19,7 @@ Test Teardown    End Web Test
 
 Testing of direct link "Computer" to "Notebooks" without login
     [Documentation]    Test direct link "Computer" to "Notebooks"
-    [Tags]    Smoke    TA2-6
+    [Tags]    TA2-6    Smoke
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open

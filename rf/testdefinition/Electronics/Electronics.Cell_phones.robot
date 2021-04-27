@@ -19,7 +19,7 @@ Test Teardown    End Web Test
 
 Testing of direct link "Electronics" to "Cell_phones" without login
     [Documentation]    Test direct link "Electronics" to "Cell_phones"
-    [Tags]    Smoke    TA2-10
+    [Tags]    TA2-10    Smoke
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open

@@ -19,7 +19,7 @@ Test Teardown    End Web Test
 
 Testing of direct link "Electronics" to "Camera and photo" without login
     [Documentation]    Test direct link "Electronics" to "Camera and photo"
-    [Tags]    Smoke    TA2-11
+    [Tags]    TA2-11    Smoke
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open
