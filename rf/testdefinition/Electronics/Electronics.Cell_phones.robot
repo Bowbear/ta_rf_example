@@ -17,7 +17,7 @@ Test Teardown    End Web Test
 
 *** Test Cases ***
 
-Testing of direct link "Electronics" to "Cell_phones" without login
+[Robot] Testing of direct link "Electronics" to "Cell_phones" without login
     [Documentation]    Test direct link "Electronics" to "Cell_phones"
     [Tags]    TA2-10    Smoke
     I open the HomePage

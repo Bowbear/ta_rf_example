@@ -17,7 +17,7 @@ Test Teardown    End Web Test
 
 *** Test Cases ***
 
-Testing of direct link "Electronics" to "Camera and photo" without login
+[Robot] Testing of direct link "Electronics" to "Camera and photo" without login
     [Documentation]    Test direct link "Electronics" to "Camera and photo"
     [Tags]    TA2-9    Smoke
     I open the HomePage
