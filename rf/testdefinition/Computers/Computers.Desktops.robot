@@ -17,9 +17,9 @@ Test Teardown    End Web Test
 
 *** Test Cases ***
 
-Testing of direct link "Computer" to "Desktops" without login
+[Robot] Testing of direct link "Computer" to "Desktops" without login
     [Documentation]    Test direct link "Computer" to "Desktops"
-    [Tags]    TA2-5    Smoke
+    [Tags]    TA2-17    Smoke
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open
