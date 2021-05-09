@@ -17,6 +17,7 @@ ${OUTPUT_DIR} =    rf/output
 # -- System
 #------------------
 ${FIREFOX_PATH} =  C:/Program Files/Mozilla Firefox/firefox.exe
+${VERSION} =    1.0.0
 ${HOST} =  %{COMPUTERNAME}
 ${USER} =  %{USERNAME}
 

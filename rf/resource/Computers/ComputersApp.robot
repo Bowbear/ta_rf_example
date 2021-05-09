@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Suite description
 
-Resource    ./PO/Computers.robot
+Resource    .${/}PO${/}Computers.robot
 
 *** Keywords ***
 I verify if "Computers" page is open
@@ -23,4 +23,4 @@ I choose the "Software" option via header link
     Click on "Software" header link
 
 I choose the "Software" option via image link
-    Click on "SOftware" image link
+    Click on "Software" image link

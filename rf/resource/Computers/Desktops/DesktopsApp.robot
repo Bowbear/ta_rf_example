@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Suite description
 
-Resource    ./PO/Desktops.robot
+Resource    .${/}PO${/}Desktops.robot
 
 *** Keywords ***
 I verify if "Desktops" page is open

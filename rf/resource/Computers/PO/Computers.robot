@@ -36,6 +36,6 @@ Click on "Software" header link
     wait until element is visible    ${COMP_SOFTW_HDR_LNK}    10s
     click link    ${COMP_SOFTW_HDR_LNK}
 
-Click on "SOftware" image link
+Click on "Software" image link
     wait until element is visible    ${COMP_SOFTW_IMG_LNK}    10s
     click link    ${COMP_SOFTW_IMG_LNK}

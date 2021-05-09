@@ -1,10 +1,10 @@
 *** Settings ***
 Documentation    Testing of ordering a desktop computer
 
-Resource    ..${/}..${/}resource/Home/HomeApp.robot
-Resource    ..${/}..${/}resource/Login/LoginApp.robot
-Resource    ..${/}..${/}resource/Electronics/ElectronicsApp.robot
-Resource    ..${/}..${/}resource/Electronics/Cell_phones/Cell_phonesApp.robot
+Resource    ..${/}..${/}resource${/}Home${/}HomeApp.robot
+Resource    ..${/}..${/}resource${/}Login${/}LoginApp.robot
+Resource    ..${/}..${/}resource${/}Electronics${/}ElectronicsApp.robot
+Resource    ..${/}..${/}resource${/}Electronics${/}Cell_phones${/}Cell_phonesApp.robot
 Resource    ..${/}..${/}resource${/}Common.robot
 Resource    ..${/}..${/}resource${/}Configuration.robot
 

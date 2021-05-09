@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Suite description
 
-Resource    ./PO/Notebooks.robot
+Resource    .${/}PO${/}Notebooks.robot
 
 *** Keywords ***
 I verify if "Notebooks" page is open

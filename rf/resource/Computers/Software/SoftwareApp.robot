@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Suite description
 
-Resource    ./PO/Software.robot
+Resource    .${/}PO${/}Software.robot
 
 *** Keywords ***
 I verify if "Software" page is open
