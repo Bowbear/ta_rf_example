@@ -1,19 +1,19 @@
 *** Settings ***
 Documentation    Testing of ordering a desktop computer
 
-Resource    ..${/}..${/}resource${/}Home${/}HomeApp.robot
-Resource    ..${/}..${/}resource${/}Login${/}LoginApp.robot
-Resource    ..${/}..${/}resource${/}Electronics${/}ElectronicsApp.robot
-Resource    ..${/}..${/}resource${/}Electronics${/}Cell_phones${/}Cell_phonesApp.robot
-Resource    ..${/}..${/}resource${/}Common.robot
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource${/}Home${/}HomeApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Login${/}LoginApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Electronics${/}ElectronicsApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Electronics${/}Cell_phones${/}Cell_phonesApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Befehl:
-# robot -d rf/results/Electronics/Cell_phones -L TRACE rf/testdefinition/Electronics/Electronics.Cell_phones.robot
+# robot -d rf/results/WebUI/Electronics/Cell_phones -L TRACE rf/testdefinition/WebUI/Electronics/Electronics.Cell_phones.robot
 
 *** Test Cases ***
 

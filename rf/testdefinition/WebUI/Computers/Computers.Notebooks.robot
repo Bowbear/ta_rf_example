@@ -1,19 +1,19 @@
 *** Settings ***
 Documentation    Testing of ordering a desktop computer
 
-Resource    ..${/}..${/}resource${/}Home${/}HomeApp.robot
-Resource    ..${/}..${/}resource${/}Login${/}LoginApp.robot
-Resource    ..${/}..${/}resource${/}Computers${/}ComputersApp.robot
-Resource    ..${/}..${/}resource${/}Computers${/}Notebooks${/}NotebooksApp.robot
-Resource    ..${/}..${/}resource${/}Common.robot
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource${/}Home${/}HomeApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Login${/}LoginApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Computers${/}ComputersApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Computers${/}Notebooks${/}NotebooksApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/Computers/Notebooks -L TRACE rf/testdefinition/Computers/Computers.Notebooks.robot
+# robot -d rf/results/WebUI/Computers/Notebooks -L TRACE rf/testdefinition/WebUI/Computers/Computers.Notebooks.robot
 
 *** Test Cases ***
 

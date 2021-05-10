@@ -1,18 +1,18 @@
 *** Settings ***
 Documentation    Testing of ordering Books
 
-Resource    ..${/}..${/}resource${/}Home${/}HomeApp.robot
-Resource    ..${/}..${/}resource${/}Login${/}LoginApp.robot
-Resource    ..${/}..${/}resource${/}Books${/}BooksApp.robot
-Resource    ..${/}..${/}resource${/}Common.robot
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource${/}Home${/}HomeApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Login${/}LoginApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Books${/}BooksApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/Books -L TRACE rf/testdefinition/Books/Books.robot
+# robot -d rf/results/WebUI/Books -L TRACE rf/testdefinition/WebUI/Books/Books.robot
 
 *** Test Cases ***
 

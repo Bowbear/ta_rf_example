@@ -1,18 +1,18 @@
 *** Settings ***
 Documentation    Testing of ordering Gift cards
 
-Resource    ..${/}..${/}resource${/}Home${/}HomeApp.robot
-Resource    ..${/}..${/}resource${/}Login${/}LoginApp.robot
-Resource    ..${/}..${/}resource${/}Gift_cards${/}Gift_cardsApp.robot
-Resource    ..${/}..${/}resource${/}Common.robot
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource${/}Home${/}HomeApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Login${/}LoginApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Gift_cards${/}Gift_cardsApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/Gift_cards -L TRACE rf/testdefinition/Gift_cards/Gift_cards.robot
+# robot -d rf/results/WebUI/Gift_cards -L TRACE rf/testdefinition/WebUI/Gift_cards/Gift_cards.robot
 
 *** Test Cases ***
 

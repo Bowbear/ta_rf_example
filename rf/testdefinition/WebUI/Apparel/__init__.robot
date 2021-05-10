@@ -1,7 +1,7 @@
 *** Settings ***
-Documentation    Running all test cases for Gift cards
+Documentation    Running all test cases for Apparel
 
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Metadata  Version          ${VERSION}
 Metadata  Executed on      ${HOST}

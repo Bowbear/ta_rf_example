@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    Running all test cases for Jewelry
+Documentation    Running all test cases
 
 Resource    ..${/}..${/}resource${/}Configuration.robot
 
