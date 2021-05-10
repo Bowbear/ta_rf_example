@@ -19,7 +19,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing of direct link "Apparel" to "Clothing" without login
     [Documentation]    Test direct link "Apparel" to "Clothing"
-    [Tags]    TA2-    Smoke
+    [Tags]    TA2-34    Smoke
     I open the HomePage
     I click on "Apparel" directly
     I verify if "Apparel" page is open
