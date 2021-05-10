@@ -1,0 +1,197 @@
+#!/usr/bin/env groovy
+/**
+ * The purpose of this script is to enable the scheduled run of automated test cases. <br/>
+ *
+ */
+
+// Import BMW specific libraries
+// @Library("atc-jenkins-shared-library")
+// import com.bmw.atc.jenkins.steps.*
+// import groovy.transform.Field
+
+def pipelineSteps = new PipelineSteps(this)
+def scmSteps = new SCMSteps(this)
+def emailSteps = new EmailSteps(this)
+def projectName = pipelineSteps.multiBranchDisplayName()
+def jiraUrl = "https://test4xray.atlassian.net/jira"
+def xrayUrl = "https://xray.cloud.xpand-it.com"
+def testTypes = ["REST_API", "GUI"]
+def flowTypes = ["WebUI", "Administration"]
+def jiraSystemKeys = ["TA2MBT"]
+def jiraProjectKeys = ["TA2MBT": "TA2MBT"]
+def jiraProjectKey = "" // will be set later
+def testPrefixes = ["TA2MBT": "TA2"]
+final def searchLabel = "Robot"
+
+// set reference to a separate variable to allow access to pipeline steps container from within closure execution
+def me = this
+
+/**
+ * Credentials
+ */
+final def JiraCredentials = "QQTA"
+
+
+def parameterList = []
+
+node('master') {
+    withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
+        def testSets = ['all']
+        def projects = jiraProjectKeys.values().unique()
+        // Get all test sets out of Jira/XRay that has a specific label and are ready for execution
+        projects.each({key ->
+            curlCmd = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '$jiraUrl/rest/api/2/search?jql=project=%22${key}%22+and+type=%22Test+Set%22+and+labels=${searchLabel}+AND+status+in+%28Ready%29&fields=key,summary'"
+            def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+            def jsonSlurper = new groovy.json.JsonSlurper()
+            def curlResultObject = jsonSlurper.parseText("" + curlResult)
+            def testSetList = curlResultObject.issues.collect { it.key + ": " + it.fields.summary }
+            testSets.addAll(testSetList)
+    })
+
+    parameterList.push(
+        booleanParam(name: 'SEND_EMAIL', defaultValue: false, description: "Whether to send a email or not")
+    )
+    parameterList.push(
+        booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Whether to update XRay or not")
+    )
+    parameterList.push(
+        choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")
+    )
+    parameterList.push(
+        choice(name: 'FLOW_TYPE', choices: flowTypes, description: "Which process flow should be tested via Robot Framework?")
+    )
+    parameterList.push(
+        choice(name: 'TEST_SET', choices: testSets, description: "Test Set from XRay. If not all test sets are shown, please run the pipeline once with READ_CONFIG checked.")
+    )
+    parameterList.push(
+        booleanParam(name: 'READ_CONFIG', defaultValue: false, description: "If checked, the pipeline will be skipped and only the param config is recreated. The service fields and test sets are recreated with current values.")
+    )
+    }
+}
+properties ([
+  parameters(
+        parameterList
+  )
+])
+
+// pipeline state variables
+def abortedPipeline = false
+def testIds = ''
+def enableSendMail = false
+def enableUpdateXray = false
+def resultDir = ""
+def testdefDir = ""
+
+pipeline {
+agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '7'))
+        timeout(time: 100, unit: 'MINUTES')
+        disableConcurrentBuilds()
+        // timestamps ()
+    }
+    environment {
+        ACCESS_KEY = credentials("${JiraCredentials}")
+    }
+	stages {
+		stage ("Test Setup"){
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+            steps {
+                script {
+                    log.outputBanner("Test Setup")
+                    if (params.READ_CONFIG) {
+                        echo "Skipping pipeline and just getting information from XRay"
+                        abortedPipeline = true
+                        // further commands
+                    } else {
+                        echo "Getting test keys out of test sets"
+                        enableSendMail = params.SEND_EMAIL
+                        enableUpdateXray = params.UPDATE_XRAY
+                        def testSummary = ""
+                        // TODO: eventuell 'all' rausnehmen
+                        if (params.TEST_SET != 'all') {
+                            withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
+                                def testSetKey = params.TEST_SET.split(":")[0]
+                                // jiraProjectKey = testSetKey.split("-")[0]
+                                def curlCmd = "curl -u ${me.env.ACCESS_KEY} '$jiraUrl/rest/raven/1.0/api/testset/${testSetKey}/test'"
+                                // echo curlCmd
+                                def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+                                // echo curlResult
+                                def jsonSlurper = new groovy.json.JsonSlurper()
+                                def curlResultObject = jsonSlurper.parseText(""+curlResult)
+                                testIds = '' + (curlResultObject.findAll { it.type == 'Generic' }.collect { it.key }.join(" "))
+                                if (testIds == '') {
+                                    error "Test set ${params.TEST_SET} does not contain automated tests"
+                                }
+                                def testSetString = '' + (params.TEST_SET).replace(": ",":  ")
+                                println "Run Test Set ${testSetString}"
+                                println "Set contains test id(s) ${testIds}"
+                            }
+                        } else {
+                            println "Running all tests"
+                            abortedPipeline = true
+                        }
+                    }
+                }
+            }
+		}
+		stage ("Run Test Cases") {
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+            steps {
+                script {
+                    log.outputBanner("Run Robot Framework test cases")
+                    def testTypeKey = params.TEST_TYPE
+                    def testFlowKey = params.FLOW_TYPE
+                    def tagName = params.TEST_SET.split(":")[1]
+                    resultDir = "results/${testTypeKey}/${testFlowKey}/${BUILD_TAG}"
+                    testdefDir = "testdefinition/${testTypeKey}/${testFlowKey}"
+                    sh "chmod 755 scripts/run_RF_Test_Cases.sh"
+                    sh "./scripts/run_RF_Test_Cases.sh ${resultDir} ${testdefDir} ${tagName}"
+                }
+            }
+		}
+		stage ("Update Xray") {
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+            steps {
+                script {
+                    echo 'Importing test results into test execution'
+                    def testExecutionParam = ""
+                    def testProject = jiraSystemKeys.get(0)
+                    def testProjectParam = "projectKey=${testProject}"
+                    echo "Project name is ${testProjectParam}"
+                    def curlCmd = "curl -u ${me.env.ACCESS_KEY} -H 'Content-Type: multipart/form-data' -F 'file=@${resultDir}/output.xml' $jiraUrl/rest/raven/1.0/import/execution/robot?${testProjectParam}${testExecutionParam}'"
+                    echo "Command is ${curlCmd}"
+                }
+            }
+		}
+	}
+	post {
+	    always {
+            echo 'I will always say Hello again!'
+	    }
+	    aborted {
+            echo 'Pipeline aborted'
+	    }
+	    failure {
+            echo 'Pipeline failure'
+	    }
+	    cleanup {
+            echo 'Pipeline cleanup'
+	    }
+	    success {
+            echo 'Pipeline success'
+	    }
+	}
+}
