@@ -149,7 +149,7 @@ agent any
                                 // testIds = '' + (curlResultObject.findAll { it.type == 'Generic' }.collect { it.key }.join(" "))
                                 // if (testIds == '') {
                                 //    error "Test set ${params.TEST_SET} does not contain automated tests"
-                                }
+                                // }
                                 def testSetString = '' + (params.TEST_SET).replace(": ",":  ")
                                 println "Run Test Set ${testSetString}"
                                 println "Set contains test id(s) ${testIds}"
