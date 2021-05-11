@@ -7,7 +7,7 @@
 // Import BMW specific libraries
 // @Library("atc-jenkins-shared-library")
 // import com.bmw.atc.jenkins.steps.*
-// import groovy.transform.Field
+import groovy.transform.Field
 
 // def pipelineSteps = new PipelineSteps(this)
 // def scmSteps = new SCMSteps(this)
