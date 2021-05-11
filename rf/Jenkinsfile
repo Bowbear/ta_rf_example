@@ -61,7 +61,7 @@ node('master') {
         def projects2 = jiraProjectKeys.values().unique()
         projects2.each({project ->
             // Get all test sets out of Jira/XRay that has a specific label and are ready for execution
-            curlCmd2 = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+and+type%3D%22${itTestSet}%22+and+labels+in+(%22${testSetLbl}%22)+AND+status+in+(%22${testSetStat}%22)fields=key,summary'"
+            curlCmd2 = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+and+type%3D%22${itTestSet}%22+and+labels+in+(%22${testSetLbl}%22)+AND+status+in+(%22${testSetStat}%22)&fields=key,summary'"
             println "Command executed: ${curlCmd2}"
             def curlResult2 = sh(returnStdout: true, script: curlCmd2).trim()
             def jsonSlurper2 = new groovy.json.JsonSlurper()
