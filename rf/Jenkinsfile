@@ -194,8 +194,8 @@ agent any
                     def testProjectParam = "projectKey=${testProject}"
                     echo "Project name is ${testProjectParam}"
                     // Current directory
-                    def workspace = pwd()
-                    echo ${workspace}
+                    // def workspace = pwd()
+                    // echo ${workspace}
                     // Getting a token from Jira
                     // def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${$jiraUrl}/api/v2/authenticate'"
                     // def token = sh(returnStdout: true, script: tokenCurl).trim()
