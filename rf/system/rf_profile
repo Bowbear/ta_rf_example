@@ -1,0 +1,15 @@
+#----------------------------------------------
+# - Environment - Datei fuer das sourcen
+# - von erforderlichen Variablen in der
+# - Umgebung des jenkins user, um erfolgreich
+# - Testfaelle in Jenkins zum laufen zu
+# - bringen.
+#----------------------------------------------
+
+# export http_proxy=http://...
+# export https_proxy=http://...
+# export no_proxy=...
+export GIT_SSL_NO_VERIFY=true
+export MOZ_HEADLESS=1
+export PYTHONPATH=/usr/bin/python3
+export PYTHONSTARTUP=/etc/python3start

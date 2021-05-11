@@ -13,10 +13,18 @@ def pipelineSteps = new PipelineSteps(this)
 def scmSteps = new SCMSteps(this)
 def emailSteps = new EmailSteps(this)
 def projectName = pipelineSteps.multiBranchDisplayName()
-def jiraUrl = "https://test4xray.atlassian.net/jira"
+def jiraUrl = "https://test4xray.atlassian.net"
+def apiVersion = "3"
 def xrayUrl = "https://xray.cloud.xpand-it.com"
-def testTypes = ["REST_API", "GUI"]
-def flowTypes = ["WebUI", "Administration"]
+def itTest = 10005
+def itTestSet = 10006
+def testSetStat = "In+Progress"
+def testSetLbl = "Robot"
+def itTestExc = 10008
+def itTestPlan = 10007
+def testPlanStat = "In+Progress"
+def testPlanLbl = "Robot"
+def testTypes = ["REST_API", "WebUI"]
 def jiraSystemKeys = ["TA2MBT"]
 def jiraProjectKeys = ["TA2MBT": "TA2MBT"]
 def jiraProjectKey = "" // will be set later
@@ -29,42 +37,50 @@ def me = this
 /**
  * Credentials
  */
-final def JiraCredentials = "QQTA"
+final def JiraCredentials = "XRAY"
 
 
 def parameterList = []
 
 node('master') {
     withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
+        def testPlans = ['all']
         def testSets = ['all']
         def projects = jiraProjectKeys.values().unique()
-        // Get all test sets out of Jira/XRay that has a specific label and are ready for execution
-        projects.each({key ->
-            curlCmd = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '$jiraUrl/rest/api/2/search?jql=project=%22${key}%22+and+type=%22Test+Set%22+and+labels=${searchLabel}+AND+status+in+%28Ready%29&fields=key,summary'"
+        projects.each({project ->
+            // Get the actual Test Plan to assign Test Executions to
+            curlCmd2 = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '$jiraUrl/rest/api/${apiVersion}/search?jql=project=%22${project}%22+AND+issuetype%3D${itTestPlan}+AND+status+in+(${testPlanStat})+AND+labels+in+(${testPlanLbl})&fields=key'"
+            def curlResult2 = sh(returnStdout: true, script: curlCmd2).trim()
+            def jsonSlurper2 = new groovy.json.JsonSlurper()
+            def curlResultObject2 = jsonSlurper2.parseText("" + curlResult2)
+            def testPlanList = curlResultObject2.issues.collect { it.key }
+            testPlans.addAll(testPlanList)
+        })
+        def projects2 = jiraProjectKeys.values().unique()
+        projects2.each({project ->
+            // Get all test sets out of Jira/XRay that has a specific label and are ready for execution
+            curlCmd = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '$jiraUrl/rest/api/${apiVersion}/search?jql=project=%22${project}%22+and+type=%22${itTestSet}%22+and+labels+in+(${testSetStat})+AND+status+in+(${testSetStat})fields=key,summary'"
             def curlResult = sh(returnStdout: true, script: curlCmd).trim()
             def jsonSlurper = new groovy.json.JsonSlurper()
             def curlResultObject = jsonSlurper.parseText("" + curlResult)
             def testSetList = curlResultObject.issues.collect { it.key + ": " + it.fields.summary }
             testSets.addAll(testSetList)
-    })
+        })
 
     parameterList.push(
-        booleanParam(name: 'SEND_EMAIL', defaultValue: false, description: "Whether to send a email or not")
+        booleanParam(name: 'READ_CONFIG_ONLY', defaultValue: false, description: "If checked, the pipeline will be skipped and only the param config is recreated. The service fields and test sets are recreated with current values.")
     )
     parameterList.push(
-        booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Whether to update XRay or not")
+        booleanParam(name: 'SEND_EMAIL', defaultValue: false, description: "Should an e-mail be sent to specific users?")
+    )
+    parameterList.push(
+        booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
     )
     parameterList.push(
         choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")
     )
     parameterList.push(
-        choice(name: 'FLOW_TYPE', choices: flowTypes, description: "Which process flow should be tested via Robot Framework?")
-    )
-    parameterList.push(
         choice(name: 'TEST_SET', choices: testSets, description: "Test Set from XRay. If not all test sets are shown, please run the pipeline once with READ_CONFIG checked.")
-    )
-    parameterList.push(
-        booleanParam(name: 'READ_CONFIG', defaultValue: false, description: "If checked, the pipeline will be skipped and only the param config is recreated. The service fields and test sets are recreated with current values.")
     )
     }
 }
@@ -103,12 +119,11 @@ agent any
             steps {
                 script {
                     log.outputBanner("Test Setup")
-                    if (params.READ_CONFIG) {
-                        echo "Skipping pipeline and just getting information from XRay"
+                    if (params.READ_CONFIG_ONLY) {
+                        echo "Skipping pipeline and just getting information from Jira/XRay"
                         abortedPipeline = true
                         // further commands
                     } else {
-                        echo "Getting test keys out of test sets"
                         enableSendMail = params.SEND_EMAIL
                         enableUpdateXray = params.UPDATE_XRAY
                         def testSummary = ""
@@ -171,8 +186,15 @@ agent any
                     def testProject = jiraSystemKeys.get(0)
                     def testProjectParam = "projectKey=${testProject}"
                     echo "Project name is ${testProjectParam}"
-                    def curlCmd = "curl -u ${me.env.ACCESS_KEY} -H 'Content-Type: multipart/form-data' -F 'file=@${resultDir}/output.xml' $jiraUrl/rest/raven/1.0/import/execution/robot?${testProjectParam}${testExecutionParam}'"
-                    echo "Command is ${curlCmd}"
+                    // Current directory
+                    def workspace = pwd()
+                    echo ${workspace}
+                    // Getting a token from Jira
+                    // def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${$jiraUrl}/api/v2/authenticate'"
+                    // def token = sh(returnStdout: true, script: tokenCurl).trim()
+                    // def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' '${$jiraUrl}/api/v2/import/execution/robot?projectKey=$PROJECT&testPlanKey=$TESTPLAN&testEnvironment=$BROWSER'"
+                    // def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+                    // echo "Command is ${curlCmd}"
                 }
             }
 		}
