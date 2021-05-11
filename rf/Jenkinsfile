@@ -77,6 +77,9 @@ node('master') {
         booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
     )
     parameterList.push(
+        choice(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
+    )
+    parameterList.push(
         choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")
     )
     parameterList.push(
