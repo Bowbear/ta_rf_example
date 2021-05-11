@@ -9,10 +9,10 @@
 // import com.bmw.atc.jenkins.steps.*
 // import groovy.transform.Field
 
-def pipelineSteps = new PipelineSteps(this)
-def scmSteps = new SCMSteps(this)
-def emailSteps = new EmailSteps(this)
-def projectName = pipelineSteps.multiBranchDisplayName()
+// def pipelineSteps = new PipelineSteps(this)
+// def scmSteps = new SCMSteps(this)
+// def emailSteps = new EmailSteps(this)
+// def projectName = pipelineSteps.multiBranchDisplayName()
 def jiraUrl = "https://test4xray.atlassian.net"
 def apiVersion = "3"
 def xrayUrl = "https://xray.cloud.xpand-it.com"
