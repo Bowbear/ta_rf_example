@@ -166,8 +166,8 @@ agent any
                     def testTypeKey = params.TEST_TYPE
                     def testFlowKey = params.FLOW_TYPE
                     def tagName = params.TEST_SET.split(":")[1]
-                    resultDir = "results/${testTypeKey}/${testFlowKey}/${BUILD_TAG}"
-                    testdefDir = "testdefinition/${testTypeKey}/${testFlowKey}"
+                    resultDir = "results/${testTypeKey}/${BUILD_TAG}"
+                    testdefDir = "testdefinition/${testTypeKey}"
                     sh "chmod 755 scripts/run_RF_Test_Cases.sh"
                     sh "./scripts/run_RF_Test_Cases.sh ${resultDir} ${testdefDir} ${tagName}"
                 }
