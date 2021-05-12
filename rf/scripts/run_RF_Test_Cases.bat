@@ -35,9 +35,8 @@ set LOGLEVEL=TRACE
 ::-------------------------------------
 ECHO -e mkdir %RESULT_DIR%
 
-# clear
-echo "Starting the test case as follows:"
-echo -e python3 -m robot -L %LOGLEVEL% -i %TAG_NAME% -d %RESULT_DIR% %TESTDEF_DIR%
+ECHO "Starting the test case as follows:"
+ECHO "python3 -m robot -L %LOGLEVEL% -i %TAG_NAME% -d %RESULT_DIR% %TESTDEF_DIR%"
 
 :: cd ../../
 :: robot -L ${LOGLEVEL} -d ${RESULT_DIR} ${TESTDEF_DIR}
