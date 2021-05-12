@@ -169,6 +169,15 @@ agent any
                 }
             }
             steps {
+                step([
+                    $class : 'RobotPublisher',
+                    outputPath : "rf/results",
+                    outputFileName : "*.xml",
+                    disableArchiveOutput : false,
+                    passThreshold : 100,
+                    unstableThreshold: 95.0,
+                    otherFiles : "*.png",
+                    ])
                 script {
                     echo "Run Robot Framework test cases"
                     def testTypeKey = params.TEST_TYPE
