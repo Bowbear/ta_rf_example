@@ -202,7 +202,7 @@ agent any
                     echo 'Importing test results into test execution'
                     def testProject = jiraSystemKeys.get(0)
                     def testProjectParam = "projectKey=${testProject}"
-                    def testPlan = testplans.get(0)
+                    def testPlan = testPlans.get(0)
                     def testPlanParam = "testPlanKey=${testPlan}"
                     def testEnvironment = ""
                     def testEnvParam = "testEnvironment=${testEnvironment}"
