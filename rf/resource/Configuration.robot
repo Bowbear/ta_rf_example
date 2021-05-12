@@ -3,7 +3,7 @@
 # -- Environment
 #-------------------------
 ${ENVIRONMENT} =  webshop1
-${BROWSER} =      firefox
+${BROWSER} =      headlessfirefox
 ${HEADLESS} =     False
 &{URL} =
 ...    webshop1=https://demo.nopcommerce.com/
