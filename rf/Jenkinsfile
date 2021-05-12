@@ -25,7 +25,7 @@ def itTestPlan = 10007
 def testPlanStat = "In+Progress"
 def testPlanLbl = "Robot"
 def testTypes = ["REST_API", "WebUI"]
-def jiraSystemKeys = ["TA2MBT"]
+def jiraSystemKeys = ["TA2"]
 def jiraProjectKeys = ["TA2MBT": "TA2"]
 def jiraProjectKey = "" // will be set later
 def testPrefixes = ["TA2MBT": "TA2"]
@@ -104,6 +104,7 @@ def enableSendMail = false
 def enableUpdateXray = false
 def resultDir = ""
 def testdefDir = ""
+def authDir = ""
 
 pipeline {
 agent any
@@ -199,19 +200,20 @@ agent any
             steps {
                 script {
                     echo 'Importing test results into test execution'
-                    // def testExecutionParam = ""
-                    // def testProject = jiraSystemKeys.get(0)
-                    //def testProjectParam = "projectKey=${testProject}"
-                    // echo "Project name is ${testProjectParam}"
-                    // Current directory
-                    // def workspace = pwd()
-                    // echo ${workspace}
+                    def testProject = jiraSystemKeys.get(0)
+                    def testProjectParam = "projectKey=${testProject}"
+                    def testPlan = testplans.get(0)
+                    def testPlanParam = "testPlanKey=${testPlan}"
+                    def testEnvironment = ""
+                    def testEnvParam = "testEnvironment=${testEnvironment}"
                     // Getting a token from Jira
-                    // def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${$jiraUrl}/api/v2/authenticate'"
-                    // def token = sh(returnStdout: true, script: tokenCurl).trim()
-                    // def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' '${$jiraUrl}/api/v2/import/execution/robot?projectKey=$PROJECT&testPlanKey=$TESTPLAN&testEnvironment=$BROWSER'"
-                    // def curlResult = sh(returnStdout: true, script: curlCmd).trim()
-                    // echo "Command is ${curlCmd}"
+                    authDir = "rf/system"
+                    def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${$jiraUrl}/api/v2/authenticate'"
+                    def token = sh(returnStdout: true, script: tokenCurl).trim()
+                    echo "Der Token lautet: ${token}"
+                    def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' '${$jiraUrl}/api/v2/import/execution/robot?${testProjectParam}&${testPlanParam}&testEnvironment=$BROWSER'"
+                    def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+                    echo "Result: ${curlResult}"
                 }
             }
 		}
