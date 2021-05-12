@@ -41,10 +41,10 @@ final def JiraCredentials = "XRAY"
 
 
 def parameterList = []
+def testPlans = []
 
 node('master') {
     withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
-        def testPlans = ['all']
         def testSets = ['all']
         def projects = jiraProjectKeys.values().unique()
         projects.each({project ->
