@@ -170,9 +170,10 @@ agent any
             }
             steps {
                 script {
-                    log.outputBanner("Run Robot Framework test cases")
-                    def testTypeKey = params.TEST_TYPE
-                    def tagName = params.TEST_SET.split(":")[1]
+                    echo "Run Robot Framework test cases"
+                    // log.outputBanner("Run Robot Framework test cases")
+                    // def testTypeKey = params.TEST_TYPE
+                    // def tagName = params.TEST_SET.split(":")[1]
                     // resultDir = "results/${testTypeKey}/${BUILD_TAG}"
                     // testdefDir = "testdefinition/${testTypeKey}"
                     // sh "chmod 755 scripts/run_RF_Test_Cases.sh"
