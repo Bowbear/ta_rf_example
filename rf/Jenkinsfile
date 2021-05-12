@@ -125,7 +125,7 @@ agent any
             }
             steps {
                 script {
-                    log.outputBanner("Test Setup")
+                    // log.outputBanner("Test Setup")
                     if (params.READ_CONFIG_ONLY) {
                         echo "Skipping pipeline and just getting information from Jira/XRay"
                         abortedPipeline = true
