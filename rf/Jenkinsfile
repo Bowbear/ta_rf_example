@@ -175,9 +175,9 @@ agent any
                     def tagName = params.TEST_SET.split(":")[1]
                     resultDir = "results/${testTypeKey}/${BUILD_TAG}"
                     testdefDir = "testdefinition/${testTypeKey}"
-                    // sh "chmod 755 scripts/run_RF_Test_Cases.sh"4
-                    echo "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
-                    sh "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
+                    sh "chmod 755 rf/scripts/run_RF_Test_Cases.sh"
+                    echo "./rf/scripts/run_RF_Test_Cases.sh ${resultDir} ${testdefDir} ${tagName}"
+                    sh "./rf/scripts/run_RF_Test_Cases.sh ${resultDir} ${testdefDir} ${tagName}"
                 }
             }
 		}
