@@ -125,12 +125,12 @@ agent any
             }
             steps {
                 script {
-                    // log.outputBanner("Test Setup")
                     if (params.READ_CONFIG_ONLY) {
                         echo "Skipping pipeline and just getting information from Jira/XRay"
                         abortedPipeline = true
                         // further commands
                     } else {
+                        echo "Preparing the test execution!"
                         enableSendMail = params.SEND_EMAIL
                         enableUpdateXray = params.UPDATE_XRAY
                         def testSummary = ""
@@ -171,13 +171,12 @@ agent any
             steps {
                 script {
                     echo "Run Robot Framework test cases"
-                    // log.outputBanner("Run Robot Framework test cases")
-                    // def testTypeKey = params.TEST_TYPE
-                    // def tagName = params.TEST_SET.split(":")[1]
-                    // resultDir = "results/${testTypeKey}/${BUILD_TAG}"
-                    // testdefDir = "testdefinition/${testTypeKey}"
-                    // sh "chmod 755 scripts/run_RF_Test_Cases.sh"
-                    // sh "./scripts/run_RF_Test_Cases.sh ${resultDir} ${testdefDir} ${tagName}"
+                    def testTypeKey = params.TEST_TYPE
+                    def tagName = params.TEST_SET.split(":")[1]
+                    resultDir = "results/${testTypeKey}/${BUILD_TAG}"
+                    testdefDir = "testdefinition/${testTypeKey}"
+                    sh "chmod 755 scripts/run_RF_Test_Cases.sh"
+                    sh "./scripts/run_RF_Test_Cases.sh ${resultDir} ${testdefDir} ${tagName}"
                 }
             }
 		}
