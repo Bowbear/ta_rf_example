@@ -189,10 +189,10 @@ agent any
             steps {
                 script {
                     echo 'Importing test results into test execution'
-                    def testExecutionParam = ""
-                    def testProject = jiraSystemKeys.get(0)
-                    def testProjectParam = "projectKey=${testProject}"
-                    echo "Project name is ${testProjectParam}"
+                    // def testExecutionParam = ""
+                    // def testProject = jiraSystemKeys.get(0)
+                    //def testProjectParam = "projectKey=${testProject}"
+                    // echo "Project name is ${testProjectParam}"
                     // Current directory
                     // def workspace = pwd()
                     // echo ${workspace}
