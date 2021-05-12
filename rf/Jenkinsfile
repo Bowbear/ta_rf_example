@@ -176,7 +176,7 @@ agent any
                     resultDir = "results/${testTypeKey}/${BUILD_TAG}"
                     testdefDir = "testdefinition/${testTypeKey}"
                     // sh "chmod 755 scripts/run_RF_Test_Cases.sh"
-                    sh "./scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
+                    sh "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
                 }
             }
 		}
