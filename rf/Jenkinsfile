@@ -205,7 +205,7 @@ agent any
                     def tokenCurl = "curl -H Content-Type: application/json -X POST --data @${authDir}/cloud_auth.json ${jiraUrl}/api/v2/authenticate"
                     def token = sh(returnStdout: true, script: tokenCurl).trim()
                     echo "Der Token lautet: ${token}"
-                    def curlCmd = "curl -H Content-Type: application/xml -X POST -H Authorization: Bearer ${token} --data @${resultDir}/output.xml ${$jiraUrl}/api/v2/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}"
+                    def curlCmd = "curl -H Content-Type: application/xml -X POST -H Authorization: Bearer ${token} --data @${resultDir}/output.xml ${jiraUrl}/api/v2/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}"
                     def curlResult = sh(returnStdout: true, script: curlCmd).trim()
                     echo "Result: ${curlResult}"
                 }
