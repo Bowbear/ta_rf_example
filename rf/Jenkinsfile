@@ -9,6 +9,7 @@ import groovy.transform.Field
 def jiraUrl = "https://test4xray.atlassian.net"
 def apiVersion = "3"
 def xrayUrl = "https://xray.cloud.xpand-it.com"
+def xrayVersion = "v2"
 def itTest = 10005
 def itTestSet = 10006
 def testSetStat = "In+Progress"
@@ -201,11 +202,10 @@ agent any
                     def testEnvParam = "testEnvironment=${testEnvironment}"
                     // Getting a token from Jira
                     authDir = "rf/system"
-                    // def jiraUrl2 = "https://test4xray.atlassian.net"
-                    def tokenCurl = "curl -H Content-Type: application/json -X POST --data @${authDir}/cloud_auth.json ${jiraUrl}/api/v2/authenticate"
+                    def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' ${xrayUrl}/api/${xrayVersion}/authenticate"
                     def token = sh(returnStdout: true, script: tokenCurl).trim()
                     echo "Der Token lautet: ${token}"
-                    def curlCmd = "curl -H Content-Type: application/xml -X POST -H Authorization: Bearer ${token} --data @${resultDir}/output.xml ${jiraUrl}/api/v2/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}"
+                    def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' ${xrayUrl}/api/${xrayVersion}/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}"
                     def curlResult = sh(returnStdout: true, script: curlCmd).trim()
                     echo "Result: ${curlResult}"
                 }
