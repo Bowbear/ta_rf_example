@@ -202,11 +202,12 @@ agent any
                     def testEnvParam = "testEnvironment=${testEnvironment}"
                     // Getting a token from Jira
                     authDir = "rf/system"
-                    def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' ${xrayUrl}/api/${xrayVersion}/authenticate"
+                    def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${xrayUrl}/api/${xrayVersion}/authenticate'"
                     def tokenResult = sh(returnStdout: true, script: tokenCurl).trim()
                     def token = tokenResult.replace('"', '')
                     echo "Der Token lautet: ${token}"
-                    def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' ${xrayUrl}/api/${xrayVersion}/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}"
+                    sh "ls ${resultDir}"
+                    def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' '${xrayUrl}/api/${xrayVersion}/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}'"
                     def curlResult = sh(returnStdout: true, script: curlCmd).trim()
                     echo "Result: ${curlResult}"
                 }
