@@ -17,8 +17,8 @@ Test Teardown    End Web Test
 
 *** Test Cases ***
 
-[Robot] Testing of direct link "Electronics" to "Camera and photo" without login
-    [Documentation]    Test direct link "Electronics" to "Camera and photo"
+[Robot] Testing of direct link "Electronics" to "Others" without login
+    [Documentation]    Test direct link "Electronics" to "Others"
     [Tags]    TA2-11    Smoke
     I open the HomePage
     I click on "Electronics" directly
