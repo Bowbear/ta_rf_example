@@ -36,10 +36,10 @@ final def JiraCredentials = "XRAY"
 
 def parameterList = []
 def testPlans = []
+def testSets = []
 
 node('master') {
     withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
-        def testSets = ['all']
         def projects = jiraProjectKeys.values().unique()
         projects.each({project ->
             // Get the actual Test Plan to assign Test Executions to
@@ -75,7 +75,7 @@ node('master') {
         booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
     )
     parameterList.push(
-        choice(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
+        textbox(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
     )
     parameterList.push(
         choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")
@@ -123,36 +123,9 @@ agent any
                     if (params.READ_CONFIG_ONLY) {
                         echo "Skipping pipeline and just getting information from Jira/XRay"
                         abortedPipeline = true
-                        // further commands
                     } else {
-                        echo "Preparing the test execution!"
+                        echo "Preparing test execution..."
                         enableSendMail = params.SEND_EMAIL
-                        enableUpdateXray = params.UPDATE_XRAY
-                        def testSummary = ""
-                        // TODO: eventuell 'all' rausnehmen
-                        if (params.TEST_SET != 'all') {
-                            withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
-                                def testSetKey = params.TEST_SET.split(":")[0]
-                                println "Test Set Key = ${testSetKey}"
-                                // jiraProjectKey = testSetKey.split("-")[0]
-                                // def curlCmd = "curl -u ${me.env.ACCESS_KEY} '${jiraUrl}/rest/api/3/issue/${testSetKey}'"
-                                // echo curlCmd
-                                // def curlResult = sh(returnStdout: true, script: curlCmd).trim()
-                                // echo curlResult
-                                // def jsonSlurper = new groovy.json.JsonSlurper()
-                                // def curlResultObject = jsonSlurper.parseText(""+curlResult)
-                                // testIds = '' + (curlResultObject.findAll { it.type == 'Generic' }.collect { it.key }.join(" "))
-                                // if (testIds == '') {
-                                //    error "Test set ${params.TEST_SET} does not contain automated tests"
-                                // }
-                                def testSetString = '' + (params.TEST_SET).replace(": ",":  ")
-                                println "Run Test Set ${testSetString}"
-                                // println "Set contains test id(s) ${testIds}"
-                            }
-                        } else {
-                            println "Running all tests"
-                            abortedPipeline = true
-                        }
                     }
                 }
             }
@@ -193,23 +166,27 @@ agent any
             }
             steps {
                 script {
-                    echo 'Importing test results into test execution'
-                    def testProject = jiraSystemKeys.get(0)
-                    def testProjectParam = "projectKey=${testProject}"
-                    def testPlan = testPlans.get(0)
-                    def testPlanParam = "testPlanKey=${testPlan}"
-                    def testEnvironment = ""
-                    def testEnvParam = "testEnvironment=${testEnvironment}"
-                    // Getting a token from Jira
-                    authDir = "rf/system"
-                    def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${xrayUrl}/api/${xrayVersion}/authenticate'"
-                    def tokenResult = sh(returnStdout: true, script: tokenCurl).trim()
-                    def token = tokenResult.replace('"', '')
-                    echo "Der Token lautet: ${token}"
-                    sh "ls ${resultDir}"
-                    def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' '${xrayUrl}/api/${xrayVersion}/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}'"
-                    def curlResult = sh(returnStdout: true, script: curlCmd).trim()
-                    echo "Result: ${curlResult}"
+                    if (params.UPDATE_XRAY) {
+                        echo 'Importing test results into test execution'
+                        def testProject = jiraSystemKeys.get(0)
+                        def testProjectParam = "projectKey=${testProject}"
+                        def testPlan = testPlans.get(0)
+                        def testPlanParam = "testPlanKey=${testPlan}"
+                        def testEnvironment = ""
+                        def testEnvParam = "testEnvironment=${testEnvironment}"
+                        // Getting a token from Jira
+                        authDir = "rf/system"
+                        def tokenCurl = "curl -H 'Content-Type: application/json' -X POST --data @'${authDir}/cloud_auth.json' '${xrayUrl}/api/${xrayVersion}/authenticate'"
+                        def tokenResult = sh(returnStdout: true, script: tokenCurl).trim()
+                        def token = tokenResult.replace('"', '')
+                        echo "Der Token lautet: ${token}"
+                        sh "ls ${resultDir}"
+                        def curlCmd = "curl -H 'Content-Type: application/xml' -X POST -H 'Authorization: Bearer ${token}' --data @'${resultDir}/output.xml' '${xrayUrl}/api/${xrayVersion}/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}'"
+                        def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+                        echo "Result: ${curlResult}"
+                    } else {
+                        echo "Updating Xray will be skipped!"
+                    }
                 }
             }
 		}
