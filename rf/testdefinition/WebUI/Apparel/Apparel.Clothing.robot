@@ -13,7 +13,7 @@ Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/WebUI/Apparel/Clothing -L TRACE rf/testdefinition/WebUI/Apparel/Apparel.Clothing.robot
+# robot -d rf/results/WebUI/Apparel/Clothing.cfg -L TRACE rf/testdefinition/WebUI/Apparel/Apparel.Clothing.cfg.robot
 
 *** Test Cases ***
 

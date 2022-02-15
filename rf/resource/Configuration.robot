@@ -3,12 +3,12 @@
 # -- Environment
 #-------------------------
 ${ENVIRONMENT} =  webshop1
-${BROWSER} =      headlessfirefox
+${BROWSER} =      firefox
 ${HEADLESS} =     False
 &{URL} =
 ...    webshop1=https://demo.nopcommerce.com/
 ...    webshop2=http://automationpractice.com/index.php
-${DELAY}  0
+${DELAY} =  0
 
 ${INPUT_DIR} =     rf/input
 ${OUTPUT_DIR} =    rf/output
@@ -32,7 +32,7 @@ ${INVALID_USER_DATA} =  rf/testdata/Login/Invalid_Users.cfg
 #------------------
 # -- Testdata
 #------------------
-${PROFIL}  ts1
-&{TESTDATA} =
-...    ts1=rf/testdata/Testdata1.cfg
+${PROFIL} =  ts1
+&{TESTDATAPATH} =
+...    ts1=rf/testdata/WebUI/Computers/Desktops.cfg
 ...    ts2=rf/testdata/Testdata2.cfg

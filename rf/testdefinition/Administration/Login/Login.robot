@@ -1,10 +1,10 @@
 *** Settings ***
 Documentation    Testing of Login
 
-Resource    ..${/}..${/}resource/Home/HomeApp.robot
-Resource    ..${/}..${/}resource/Login/LoginApp.robot
-Resource    ..${/}..${/}resource${/}Common.robot
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource/Home/HomeApp.robot
+Resource    ..${/}..${/}..${/}resource/Login/LoginApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}

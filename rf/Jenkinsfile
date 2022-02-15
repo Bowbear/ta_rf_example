@@ -10,15 +10,18 @@ def jiraUrl = "https://test4xray.atlassian.net"
 def apiVersion = "3"
 def xrayUrl = "https://xray.cloud.xpand-it.com"
 def xrayVersion = "v2"
+
 def itTest = 10005
 def itTestSet = 10006
+def itTestPlan = 10007
+def itTestExc = 10008
+
 def testSetStat = "In+Progress"
 def testSetLbl = "Robot"
-def itTestExc = 10008
-def itTestPlan = 10007
 def testPlanStat = "In+Progress"
 def testPlanLbl = "Robot"
-def testTypes = ["REST_API", "WebUI"]
+
+def testTypes = ["REST", "WebUI"]
 def jiraSystemKeys = ["TA2"]
 def jiraProjectKeys = ["TA2MBT": "TA2"]
 def jiraProjectKey = "" // will be set later
@@ -75,7 +78,7 @@ node('master') {
         booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
     )
     parameterList.push(
-        string(name: 'TEST_PLAN', choices: testPlans.get(0), description: "Test Plan from XRay.")
+        choice(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
     )
     parameterList.push(
         choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")

@@ -1,10 +1,10 @@
 *** Settings ***
 Documentation    Testing of registration
 
-Resource    ..${/}..${/}resource/Home/HomeApp.robot
-Resource    ..${/}..${/}resource/Registration/RegistrationApp.robot
-Resource    ..${/}..${/}resource${/}Common.robot
-Resource    ..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource/Home/HomeApp.robot
+Resource    ..${/}..${/}..${/}resource/Registration/RegistrationApp.robot
+Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 
 Suite Setup    Getting User data    ${VALID_REGIST_DATA}
 Test Setup    I open the browser  ${BROWSER}

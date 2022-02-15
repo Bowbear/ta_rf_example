@@ -2,7 +2,6 @@
 Documentation    Testing of ordering a desktop computer
 
 Resource    ..${/}..${/}..${/}resource${/}Home${/}HomeApp.robot
-Resource    ..${/}..${/}..${/}resource${/}Login${/}LoginApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Apparel${/}ApparelApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Apparel${/}Accessories${/}AccessoriesApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Common.robot
@@ -19,7 +18,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing of direct link "Apparel" to "Accessories" without login
     [Documentation]    Test direct link "Apparel" to "Accessories"
-    [Tags]    TA2-35    Smoke
+    [Tags]    TA2-35    Smoke    Apparel    Apparel_Accessories
     I open the HomePage
     I click on "Apparel" directly
     I verify if "Apparel" page is open
