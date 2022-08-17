@@ -18,7 +18,7 @@ def itTestExc = 10008
 
 def testSetStat = "In+Progress"
 def testSetLbl = "Robot"
-def testSets = ["TA2-17", "Smoke", "Computer"]
+def testSets = ["Smoke", "Computer", "Desktop"]
 def testPlanStat = "In+Progress"
 def testPlanLbl = "Robot"
 def testPlans = ["ROBOT"]
@@ -121,7 +121,7 @@ agent any
                 script {
                     echo "Run Robot Framework test cases"
                     def testTypeKey = params.TEST_TYPE
-                    def tagName = params.TEST_SET.split(":")[1]
+                    def tagName = params.TEST_SET
                     resultDir = "rf/results/${testTypeKey}/${BUILD_TAG}"
                     testdefDir = "rf/testdefinition/${testTypeKey}"
                     // sh "chmod 755 rf/scripts/run_RF_Test_Cases.sh"
