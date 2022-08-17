@@ -1,0 +1,160 @@
+#!/usr/bin/env groovy
+/**
+ * The purpose of this script is to enable the scheduled run of automated test cases. <br/>
+ *
+ */
+
+import groovy.transform.Field
+
+def jiraUrl = "https://test4xray.atlassian.net"
+def apiVersion = "3"
+def xrayUrl = "https://xray.cloud.xpand-it.com"
+def xrayVersion = "v2"
+
+def itTest = 10005
+def itTestSet = 10006
+def itTestPlan = 10007
+def itTestExc = 10008
+
+def testSetStat = "In+Progress"
+def testSetLbl = "Robot"
+def testSets = ["TA2-17", "Smoke", "Computer"]
+def testPlanStat = "In+Progress"
+def testPlanLbl = "Robot"
+def testPlans = ["ROBOT"]
+
+def testTypes = ["REST", "WebUI"]
+def jiraSystemKeys = ["TA2"]
+def jiraProjectKeys = ["TA2MBT": "TA2"]
+def jiraProjectKey = "" // will be set later
+def testPrefixes = ["TA2MBT": "TA2"]
+final def searchLabel = "Robot"
+
+// set reference to a separate variable to allow access to pipeline steps container from within closure execution
+def me = this
+
+/**
+ * Credentials
+ */
+final def JiraCredentials = "XRAY"
+
+
+def parameterList = []
+def testPlans = []
+def testSets = []
+
+node('master') {
+    withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
+
+    parameterList.push(
+        booleanParam(name: 'READ_CONFIG_ONLY', defaultValue: false, description: "If checked, the pipeline will be skipped and only the param config is recreated. The service fields and test sets are recreated with current values.")
+    )
+    parameterList.push(
+        booleanParam(name: 'SEND_EMAIL', defaultValue: false, description: "Should an e-mail be sent to specific users?")
+    )
+    parameterList.push(
+        booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
+    )
+    parameterList.push(
+        choice(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
+    )
+    parameterList.push(
+        choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")
+    )
+    parameterList.push(
+        choice(name: 'TEST_SET', choices: testSets, description: "Test Set from XRay. If not all test sets are shown, please run the pipeline once with READ_CONFIG checked.")
+    )
+    }
+}
+properties ([
+  parameters(
+        parameterList
+  )
+])
+
+// pipeline state variables
+def abortedPipeline = false
+def testIds = ''
+def enableSendMail = false
+def enableUpdateXray = false
+def resultDir = ""
+def testdefDir = ""
+def authDir = ""
+
+pipeline {
+agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '20', daysToKeepStr: '7'))
+        timeout(time: 100, unit: 'MINUTES')
+        disableConcurrentBuilds()
+        // timestamps ()
+    }
+    environment {
+        ACCESS_KEY = credentials("${JiraCredentials}")
+    }
+	stages {
+		stage ("Test Setup"){
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+            steps {
+                script {
+                    if (params.READ_CONFIG_ONLY) {
+                        echo "Skipping pipeline and just getting information from Jira/XRay"
+                        abortedPipeline = true
+                    } else {
+                        echo "Preparing test execution..."
+                        enableSendMail = params.SEND_EMAIL
+                    }
+                }
+            }
+		}
+		stage ("Run Test Cases") {
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+            steps {
+                script {
+                    echo "Run Robot Framework test cases"
+                    def testTypeKey = params.TEST_TYPE
+                    def tagName = params.TEST_SET.split(":")[1]
+                    resultDir = "rf/results/${testTypeKey}/${BUILD_TAG}"
+                    testdefDir = "rf/testdefinition/${testTypeKey}"
+                    // sh "chmod 755 rf/scripts/run_RF_Test_Cases.sh"
+                    echo "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
+                    sh "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
+                }
+                step([
+                    $class : 'RobotPublisher',
+                    outputPath : "${resultDir}",
+                    outputFileName : "*.xml",
+                    disableArchiveOutput : false,
+                    passThreshold : 100,
+                    unstableThreshold: 95.0,
+                    otherFiles : "*.png",
+                    ])
+            }
+		}
+	}
+	post {
+	    always {
+            echo 'I will always say Hello again!'
+	    }
+	    aborted {
+            echo 'Pipeline aborted'
+	    }
+	    failure {
+            echo 'Pipeline failure'
+	    }
+	    cleanup {
+            echo 'Pipeline cleanup'
+	    }
+	    success {
+            echo 'Pipeline success'
+	    }
+	}
+}

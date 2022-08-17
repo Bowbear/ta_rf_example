@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    dd
+Documentation    This is the page object repository for the computers page object
 
 Library    SeleniumLibrary
 

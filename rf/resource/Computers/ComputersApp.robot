@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    Suite description
+Documentation    This is the page control file to handle the functionalities of the computer page
 
 Resource    .${/}PO${/}Computers.robot
 
@@ -24,3 +24,5 @@ I choose the "Software" option via header link
 
 I choose the "Software" option via image link
     Click on "Software" image link
+
+

@@ -12,7 +12,7 @@ Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# $RES_DIR="/results/WebUI/Computers/Desktops"
+# $RES_DIR="results/WebUI/Computers/Desktops"
 # $TAG_NAM="Smoke"
 # $DEF_DIR="testdefinition/WebUI/Computers/Computers.Desktops.robot"
 # python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
@@ -30,7 +30,7 @@ Test Teardown    End Web Test
 
 [Robot] Set a configurable desktop computer without login
     [Documentation]    Test direct link "Computer" to "Desktops"
-    [Tags]    TA2-17    Smoke    Erweitert
+    [Tags]    TA2-18    Smoke    Erweitert
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open
