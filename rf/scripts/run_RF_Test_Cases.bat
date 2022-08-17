@@ -9,6 +9,8 @@
 :: sierung der unterschiedlichen Testfaelle dient.
 ::------------------------------------------------------------
 
+call git config --system core.longpaths true
+
 :: -- Variablendefinitionen
 ::--------------------------
 set RESULT_DIR=%1
