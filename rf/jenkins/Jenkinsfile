@@ -53,9 +53,6 @@ node('master') {
         booleanParam(name: 'SEND_EMAIL', defaultValue: false, description: "Should an e-mail be sent to specific users?")
     )
     parameterList.push(
-        booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
-    )
-    parameterList.push(
         choice(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
     )
     parameterList.push(
