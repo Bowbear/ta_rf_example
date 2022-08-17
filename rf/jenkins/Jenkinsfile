@@ -40,8 +40,8 @@ final def JiraCredentials = "XRAY"
 
 
 def parameterList = []
-def testPlans = []
-def testSets = []
+// def testPlans = []
+// def testSets = []
 
 node('master') {
     withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
