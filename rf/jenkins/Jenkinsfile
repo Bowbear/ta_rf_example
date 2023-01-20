@@ -6,7 +6,7 @@
 
 import groovy.transform.Field
 
-def jiraUrl = "https://test4xray.atlassian.net"
+def jiraUrl = "https://coe-auto.atlassian.net"
 def apiVersion = "3"
 def xrayUrl = "https://xray.cloud.xpand-it.com"
 def xrayVersion = "v2"

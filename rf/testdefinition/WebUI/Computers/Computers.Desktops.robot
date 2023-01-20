@@ -6,8 +6,9 @@ Resource    ..${/}..${/}..${/}resource${/}Computers${/}ComputersApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Computers${/}Desktops${/}DesktopsApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Common.robot
 Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
+Resource    ..${/}..${/}..${/}resource${/}DataManager.robot
 
-Suite Setup    Getting Test case data   ${TESTDATAPATH.ts1}    ${VALID_USER_DATA}
+Suite Setup    Getting Test case data   ${TESTDATAPATH.DESKTOPS}    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
@@ -16,6 +17,8 @@ Test Teardown    End Web Test
 # $TAG_NAM="Smoke"
 # $DEF_DIR="testdefinition/WebUI/Computers/Computers.Desktops.robot"
 # python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
+*** Variables ***
+${CUSTOM} =    CUSTOM_1
 
 *** Test Cases ***
 
@@ -38,7 +41,7 @@ Test Teardown    End Web Test
     I verify if "Desktops" page is open
     I sort computer by - Name: A to Z
     Choose product - Build your own computer
-    Choose configuration    ${TESTDATA.CUSTOM}
+    Choose configuration    ${TESTDATA.${CUSTOM}}
     Set amount and add to cart    2
     sleep    10s
 

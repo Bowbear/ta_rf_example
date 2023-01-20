@@ -33,6 +33,8 @@ ${INVALID_USER_DATA} =  rf/testdata/Login/Invalid_Users.cfg
 # -- Testdata
 #------------------
 ${PROFIL} =  ts1
+${TS_BASE_DIR_UI} =    testdata/WebUI
 &{TESTDATAPATH} =
-...    ts1=rf/testdata/WebUI/Computers/Desktops.cfg
-...    ts2=rf/testdata/Testdata2.cfg
+...    DESKTOPS=${TS_BASE_DIR_UI}/Computers/Desktops.cfg
+...    NOTEBOOKS=${TS_BASE_DIR_UI}/Computers/Notebooks.cfg
+...    SOFTWARE=${TS_BASE_DIR_UI}/Computers/Software.cfg
