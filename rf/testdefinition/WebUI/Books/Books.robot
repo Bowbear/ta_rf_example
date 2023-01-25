@@ -12,14 +12,16 @@ Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/WebUI/Books -L TRACE rf/testdefinition/WebUI/Books/Books.robot
+# $RES_DIR="results/WebUI/Books"
+# $TAG_NAM="Books"
+# $DEF_DIR="testdefinition/WebUI/Books/Books.robot"
+# python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
 
 *** Test Cases ***
 
 [Robot] Testing of link "Books" without login
     [Documentation]    Test link to "Books"
-    [Tags]    TA2-38    Smoke
+    [Tags]    TA2-38    Smoke    Books
     I open the HomePage
     I click on "Books" directly
     I verify if "Books" page is open
-

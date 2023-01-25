@@ -13,20 +13,18 @@ Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# $RES_DIR="results/WebUI/Electronics/Camera_n_photo"
-# $TAG_NAM="Camera_n_photo"
-# $DEF_DIR="testdefinition/WebUI/Electronics/Electronics.Camera_n_photo.robot"
+# $RES_DIR="results/WebUI/Electronics"
+# $TAG_NAM="Electronics"
+# $DEF_DIR="testdefinition/WebUI/Electronics/Electronics.robot"
 # python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
 
 *** Test Cases ***
 
-[Robot] Testing availability of "Camera and photo" page without login
+[Robot] Testing availability of "Electronics" page without login
     [Documentation]    Test direct link "Electronics" to "Camera and photo"
-    [Tags]    TA2-9    Smoke    Electronics    Camera_n_photo
+    [Tags]    TA2-9    Smoke    Electronics
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open
-    I choose the "Camera & photo" option via header link
-    I verify if "Camera & photo" page is open
 
 # Testing pop up link "Computer" to "Desktop"

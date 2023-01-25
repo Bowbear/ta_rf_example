@@ -17,6 +17,7 @@ ${DESKTOP_A2C_BTN} =           xpath=//button[@id="add-to-cart-button-1"]
 *** Keywords ***
 Header on "Desktops" page exist
     element should be visible    ${DESKTOPS_HEADER}
+    capture page screenshot    EMBED
 
 Sort by
     [Arguments]    ${Sorting}
@@ -29,10 +30,10 @@ Select product
 
 Select configuration
     [Arguments]    ${config}
-    run keyword unless    '${config.processor}' == '${EMPTY}'    Select Processor    ${config.processor}
-    run keyword unless    '${config.ram}' == '${EMPTY}'    Select RAM    ${config.ram}
-    run keyword unless    '${config.hdd}' == '${EMPTY}'    Select HDD    ${config.hdd}
-    run keyword unless    '${config.os}' == '${EMPTY}'    Select OS    ${config.os}
+    run keyword if    '${config.processor}' != '${EMPTY}'    Select Processor    ${config.processor}
+    run keyword if    '${config.ram}' != '${EMPTY}'    Select RAM    ${config.ram}
+    run keyword if    '${config.hdd}' != '${EMPTY}'    Select HDD    ${config.hdd}
+    run keyword if    '${config.os}' != '${EMPTY}'    Select OS    ${config.os}
     run keyword     Select MSO    ${config.ms_office}
     run keyword     Select Acrobat    ${config.acrobat}
     run keyword     Select TCO    ${config.total_commander}

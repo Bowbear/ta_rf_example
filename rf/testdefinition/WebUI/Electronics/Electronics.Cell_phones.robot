@@ -12,14 +12,17 @@ Suite Setup    Getting User data    ${VALID_USER_DATA}
 Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
-# Befehl:
-# robot -d rf/results/WebUI/Electronics/Cell_phones -L TRACE rf/testdefinition/WebUI/Electronics/Electronics.Cell_phones.robot
+# Command:
+# $RES_DIR="results/WebUI/Electronics/Cell_phones"
+# $TAG_NAM="Cell_phones"
+# $DEF_DIR="testdefinition/WebUI/Electronics/Electronics.Cell_phones.robot"
+# python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
 
 *** Test Cases ***
 
-[Robot] Testing of direct link "Electronics" to "Cell_phones" without login
+[Robot] Testing availability of "Cell_phones" page without login
     [Documentation]    Test direct link "Electronics" to "Cell_phones"
-    [Tags]    TA2-10    Smoke
+    [Tags]    TA2-10    Smoke    Electronics    Cell_phones
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open

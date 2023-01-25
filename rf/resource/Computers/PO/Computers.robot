@@ -15,6 +15,7 @@ ${COMP_SOFTW_IMG_LNK} =    xpath=//div/a[@title="Show products in category Softw
 *** Keywords ***
 Header on "Computers" page exist
     element should be visible    ${COMP_HEADER}
+    capture page screenshot    EMBED
 
 Click on "Desktops" header link
     wait until element is visible    ${COMP_DESKT_HDR_LNK}    10s

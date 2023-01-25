@@ -12,13 +12,17 @@ Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/WebUI/Jewelry -L TRACE rf/testdefinition/WebUI/Jewelry/Jewelry.robot
+# $RES_DIR="results/WebUI/Jewelry"
+# $TAG_NAM="Jewelry"
+# $DEF_DIR="testdefinition/WebUI/Jewelry/Jewelry.robot"
+# python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
+
 
 *** Test Cases ***
 
 [Robot] Testing of link "Jewelry" without login
     [Documentation]    Test link to "Jewelry"
-    [Tags]    TA2-36    Smoke
+    [Tags]    TA2-36    Smoke    Jewelry
     I open the HomePage
     I click on "Jewelry" directly
     I verify if "Jewelry" page is open

@@ -12,13 +12,16 @@ Test Setup    I open the browser  ${BROWSER}
 Test Teardown    End Web Test
 
 # Command:
-# robot -d rf/results/WebUI/Digital_downloads -L TRACE rf/testdefinition/WebUI/Digital_downloads/Digital_downloads.robot
+# $RES_DIR="results/WebUI/Digital_downloads"
+# $TAG_NAM="Digital_downloads"
+# $DEF_DIR="testdefinition/WebUI/Digital_downloads/Digital_downloads.robot"
+# python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
 
 *** Test Cases ***
 
-[Robot] Testing of link "Digital downloads" without login
+[Robot] Testing of availability "Digital downloads" page without login
     [Documentation]    Test link to "Digital downloads"
-    [Tags]    TA2-37    Smoke
+    [Tags]    TA2-37    Smoke    Digital_downloads
     I open the HomePage
     I click on "Digital downloads" directly
     I verify if "Digital downloads" page is open
