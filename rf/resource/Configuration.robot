@@ -5,6 +5,10 @@
 ${ENVIRONMENT} =  webshop1
 ${BROWSER} =      firefox
 ${HEADLESS} =     False
+&{UMGEBUNG} =
+...    TEST=Testing
+...    ENTW=Development
+
 &{URL} =
 ...    webshop1=https://demo.nopcommerce.com/
 ...    webshop2=http://automationpractice.com/index.php

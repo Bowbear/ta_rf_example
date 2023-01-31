@@ -18,6 +18,8 @@ Test Teardown    End Web Test
 # $DEF_DIR="testdefinition/WebUI/Computers/Computers.robot"
 # python -m robot -d $RES_DIR -L TRACE -i $TAG_NAM $DEF_DIR
 
+# robot --variable Build_Id:$Build_Id path/to/tests/
+
 *** Variables ***
 ${CUSTOM} =    CUSTOM_1
 
@@ -25,7 +27,10 @@ ${CUSTOM} =    CUSTOM_1
 
 [Robot] Testing the availability of the "Computers" page without login
     [Documentation]    Test direct link "Computers"
+    ...    $Env:UMG='TEST'
     [Tags]    NOPC-8    NOPC-29    Smoke    Computers
+    # ${UMG}    get environment variable    %{UMG}
+    log    ${UMGEBUNG.%{UMG}}
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open
