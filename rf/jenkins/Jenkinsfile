@@ -12,23 +12,22 @@ def xrayUrl = "https://xray.cloud.xpand-it.com"
 def xrayVersion = "v2"
 
 def itTest = 10005
-def itTestSet = 10006
-def itTestPlan = 10007
+def itTestSet = "Test+Set"     // 10006
+def itTestPlan = "Test+Plan"   // 10007
 def itTestExc = 10008
 
 def testSetStat = "In+Progress"
-def testSetLbl = "Robot"
-def testSets = ["Smoke", "Computer", "Desktop"]
+def testSetLbl = "ROBOT,Computers"
 def testPlanStat = "In+Progress"
-def testPlanLbl = "Robot"
-def testPlans = ["ROBOT"]
+def testPlanLbl = "A_NOPC_COMP,ROBOT"
 
 def testTypes = ["REST", "WebUI"]
-def jiraSystemKeys = ["TA2"]
-def jiraProjectKeys = ["TA2MBT": "TA2"]
+def testSubTypes = ["Computers", "Smoke"]
+def testSubSubTypes = ["All", "Desktops", "Notebooks", "Software"]
+def jiraSystemKeys = ["NOPC"]
+def jiraProjectKeys = ["NOPC": "NOPCommerce"]
 def jiraProjectKey = "" // will be set later
-def testPrefixes = ["TA2MBT": "TA2"]
-final def searchLabel = "Robot"
+def testPrefixes = ["NOPC": "NOPC"]
 
 // set reference to a separate variable to allow access to pipeline steps container from within closure execution
 def me = this
@@ -45,6 +44,31 @@ def parameterList = []
 
 node('master') {
     withCredentials([usernamePassword(credentialsId: JiraCredentials, usernameVariable: 'JIRA_USER', passwordVariable: 'JIRA_PASSWORD')]) {
+        def projects = jiraProjectKeys.values().unique()
+        projects.each({project ->
+            // Get the actual Test Plan to assign Test Executions to
+            curlCmd = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+AND+issuetype%3D%22${itTestPlan}%22+AND+status+in+(%22${testPlanStat}%22)+AND+labels+in+(${testPlanLbl})&fields=key'"
+            println "Command executed: ${curlCmd}"
+            def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+            def jsonSlurper = new groovy.json.JsonSlurper()
+            def curlResultObject = jsonSlurper.parseText("" + curlResult)
+            def testPlanList = curlResultObject.issues.collect { it.key }
+            testPlans.addAll(testPlanList)
+            println "Test Plan is ${testPlans}"
+        })
+        def projects2 = jiraProjectKeys.values().unique()
+        projects2.each({project ->
+            // Get all test sets out of Jira/XRay that has a specific label and are ready for execution
+            curlCmd2 = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' '${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+AND+type%3D%22${itTestSet}%22+AND+labels+in+(${testSetLbl})+AND+status+in+(%22${testSetStat}%22)&fields=key,summary'"
+            println "Command executed: ${curlCmd2}"
+            def curlResult2 = sh(returnStdout: true, script: curlCmd2).trim()
+            def jsonSlurper2 = new groovy.json.JsonSlurper()
+            def curlResultObject2 = jsonSlurper2.parseText("" + curlResult2)
+            def testSetList = curlResultObject2.issues.collect { it.key + ": " + it.fields.summary }
+            testSets.addAll(testSetList)
+            println "Test Sets are ${testSets}"
+        })
+
 
     parameterList.push(
         booleanParam(name: 'READ_CONFIG_ONLY', defaultValue: false, description: "If checked, the pipeline will be skipped and only the param config is recreated. The service fields and test sets are recreated with current values.")
@@ -53,10 +77,19 @@ node('master') {
         booleanParam(name: 'SEND_EMAIL', defaultValue: false, description: "Should an e-mail be sent to specific users?")
     )
     parameterList.push(
+        booleanParam(name: 'UPDATE_XRAY', defaultValue: false, description: "Should the test results imported into a test execution and the test plan updated?")
+    )
+    parameterList.push(
         choice(name: 'TEST_PLAN', choices: testPlans, description: "Test Plan from XRay.")
     )
     parameterList.push(
         choice(name: 'TEST_TYPE', choices: testTypes, description: "What kind of tests should be executed via Robot Framework?")
+    )
+    parameterList.push(
+        choice(name: 'TEST_STYPE', choices: testSubTypes, description: "What kind of sub tests should be executed via Robot Framework?")
+    )
+    parameterList.push(
+        choice(name: 'TEST_SSTYPE', choices: testSubSubTypes, description: "What kind of sub sub tests should be executed via Robot Framework?")
     )
     parameterList.push(
         choice(name: 'TEST_SET', choices: testSets, description: "Test Set from XRay. If not all test sets are shown, please run the pipeline once with READ_CONFIG checked.")
@@ -115,25 +148,67 @@ agent any
                 }
             }
             steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 script {
                     echo "Run Robot Framework test cases"
                     def testTypeKey = params.TEST_TYPE
+                    def testSTypeKey = params.TEST_STYPE
+                    def testSSTypeKey = params.TEST_SSTYPE
                     def tagName = params.TEST_SET
-                    resultDir = "rf/results/${testTypeKey}/${BUILD_TAG}"
-                    testdefDir = "rf/testdefinition/${testTypeKey}"
+                    resultDir = "rf/results/${testTypeKey}/${testSTypeKey}/${BUILD_TAG}"
+                    testdefDir = "rf/testdefinition/${testSTypeKey}/${testTypeKey}"
                     // sh "chmod 755 rf/scripts/run_RF_Test_Cases.sh"
                     echo "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
                     sh "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
+                    }
                 }
+            }
+		}
+		stage ("Public test results") {
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+		    steps {
                 step([
-                    $class : 'RobotPublisher',
-                    outputPath : "${resultDir}",
-                    outputFileName : "*.xml",
-                    disableArchiveOutput : false,
-                    passThreshold : 100,
-                    unstableThreshold: 95.0,
-                    otherFiles : "*.png",
-                    ])
+                   $class : 'RobotPublisher',
+                   outputPath : "${resultDir}",
+                   logFileName : "log.html",
+                   reportFileName : "report.html",
+                   outputFileName : "output.xml",
+                   disableArchiveOutput : false,
+                   passThreshold : 100,
+                   unstableThreshold: 95.0,
+                   otherFiles : "*.png",
+                   ])
+		    }
+		}
+		stage ("Update Xray") {
+            when {
+                expression {
+                    !abortedPipeline
+                }
+            }
+            steps {
+                script {
+                    if (params.UPDATE_XRAY) {
+                        echo 'Importing test results into test execution'
+                        echo '=========================================='
+                        def testProject = jiraSystemKeys.get(0)
+                        def testProjectParam = "projectKey=${testProject}"
+                        def testPlan = testPlans.get(0)
+                        def testPlanParam = "testPlanKey=${testPlan}"
+                        def testEnvironment = ""
+                        def testEnvParam = "testEnvironment=${testEnvironment}"
+                        // call REST-API
+                        def curlCmd = "curl -u ${me.env.ACCESS_KEY} -F file=@'${resultDir}/output.xml' '${jiraUrl}/rest/raven/${xrayVersion}/import/execution/robot?${testProjectParam}&${testPlanParam}&${testEnvParam}'"
+                        def curlResult = sh(returnStdout: true, script: curlCmd).trim()
+                        echo "Result: ${curlResult}"
+                    } else {
+                        echo "Updating Xray will be skipped!"
+                    }
+                }
             }
 		}
 	}
