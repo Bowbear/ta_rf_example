@@ -25,7 +25,7 @@ def testTypes = ["REST", "WebUI"]
 def testSubTypes = ["Computers", "Smoke"]
 def testSubSubTypes = ["All", "Desktops", "Notebooks", "Software"]
 def jiraSystemKeys = ["NOPC"]
-def jiraProjectKeys = ["NOPC": "NOPCommerce"]
+def jiraProjectKeys = ["NOPC": "NOPC"]
 def jiraProjectKey = "" // will be set later
 def testPrefixes = ["NOPC": "NOPC"]
 
