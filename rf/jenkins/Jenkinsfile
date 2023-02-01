@@ -47,7 +47,7 @@ node('master') {
         def projects = jiraProjectKeys.values().unique()
         projects.each({project ->
             // Get the actual Test Plan to assign Test Executions to
-            curlCmd = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' ${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+AND+issuetype%3D%22${itTestPlan}%22+AND+status+in+%28%27${testPlanStat}%27%%29+AND+labels+in+%28${testPlanLbl}%29"
+            curlCmd = "curl -u \${JIRA_USER}:\${JIRA_PASSWORD} -X GET -H 'Content-Type: application/json' ${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+AND+issuetype%3D%22${itTestPlan}%22+AND+status+in+%28%27${testPlanStat}%27%29+AND+labels+in+%28${testPlanLbl}%29"
             println "Command executed: ${curlCmd}"
             def curlResult = sh(returnStdout: true, script: curlCmd).trim()
             def jsonSlurper = new groovy.json.JsonSlurper()
