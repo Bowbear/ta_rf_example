@@ -3,7 +3,7 @@
 # -- Environment
 #-------------------------
 ${ENVIRONMENT} =  webshop1
-${BROWSER} =      firefox
+${BROWSER} =      headlessfirefox
 ${HEADLESS} =     False
 &{UMGEBUNG} =
 ...    TEST=Testing
