@@ -155,7 +155,7 @@ agent any
                     def testTypeKey = params.TEST_TYPE
                     def testSTypeKey = params.TEST_STYPE
                     def testSSTypeKey = params.TEST_SSTYPE
-                    def tagName = params.TEST_SET
+                    def tagName = params.TEST_SET.split(":")[1]
                     resultDir = "rf/results/${testSTypeKey}/${testTypeKey}/${BUILD_TAG}"
                     testdefDir = "rf/testdefinition/${testTypeKey}/${testSTypeKey}"
                     // sh "chmod 755 rf/scripts/run_RF_Test_Cases.sh"
