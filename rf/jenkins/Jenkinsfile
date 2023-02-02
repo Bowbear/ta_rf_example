@@ -156,8 +156,8 @@ agent any
                     def testSTypeKey = params.TEST_STYPE
                     def testSSTypeKey = params.TEST_SSTYPE
                     def tagName = params.TEST_SET
-                    resultDir = "rf/results/${testTypeKey}/${testSTypeKey}/${BUILD_TAG}"
-                    testdefDir = "rf/testdefinition/${testSTypeKey}/${testTypeKey}"
+                    resultDir = "rf/results/${testSTypeKey}/${testTypeKey}/${BUILD_TAG}"
+                    testdefDir = "rf/testdefinition/${testTypeKey}/${testSTypeKey}"
                     // sh "chmod 755 rf/scripts/run_RF_Test_Cases.sh"
                     echo "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
                     sh "./rf/scripts/run_RF_Test_Cases.bat ${resultDir} ${testdefDir} ${tagName}"
