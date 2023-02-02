@@ -35,7 +35,7 @@ def me = this
 /**
  * Credentials
  */
-final def JiraCredentials = "XRAY"
+final def JiraCredentials = "guenther-matthias.baer@capgemini.com"
 
 
 def parameterList = []
@@ -47,7 +47,7 @@ node('master') {
         def projects = jiraProjectKeys.values().unique()
         projects.each({project ->
             // Get the actual Test Plan to assign Test Executions to
-            curlCmd = "curl -u guenther-matthias.baer@capgemini.com:\${JIRA_PASSWORD} -X GET -H 'Content-Type:application/json' '${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+AND+issuetype%3D%22${itTestPlan}%22+AND+status+in+%28%27${testPlanStat}%27%29+AND+labels+in+%28${testPlanLbl}%29&fields=key'"
+            curlCmd = "curl -u guenther-matthias.baer@capgemini.com:WJOJHKUNzZuXv6tyG7dOEB3F -X GET -H 'Content-Type:application/json' '${jiraUrl}/rest/api/${apiVersion}/search?jql=project%3D%22${project}%22+AND+issuetype%3D%22${itTestPlan}%22+AND+status+in+%28%27${testPlanStat}%27%29+AND+labels+in+%28${testPlanLbl}%29&fields=key'"
             println "Command executed: ${curlCmd}"
             def curlResult = sh(returnStdout: true, script: curlCmd).trim()
             println "Command result: ${curlResult}"
