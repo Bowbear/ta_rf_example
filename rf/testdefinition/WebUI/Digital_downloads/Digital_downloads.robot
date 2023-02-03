@@ -21,7 +21,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing of availability "Digital downloads" page without login
     [Documentation]    Test link to "Digital downloads"
-    [Tags]    TA2-37    Smoke    Digital_downloads
+    [Tags]    NOPC-52    Smoke    Digital_downloads
     I open the HomePage
     I click on "Digital downloads" directly
     I verify if "Digital downloads" page is open
