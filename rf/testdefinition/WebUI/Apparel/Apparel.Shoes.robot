@@ -22,7 +22,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of direct link "Apparel" to "Shoes" without login
     [Documentation]    Test direct link "Apparel" to "Shoes"
-    [Tags]    TA2-33    Smoke    Apparel    Shoes
+    [Tags]    NOPC-38    Smoke    Apparel    Shoes
     I open the HomePage
     I click on "Apparel" directly
     I verify if "Apparel" page is open

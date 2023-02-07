@@ -25,7 +25,7 @@ ${CUSTOM} =    CUSTOM_1
 
 [Robot] Testing availability of "Desktops" page without login
     [Documentation]    Test direct link "Computer" to "Desktops"
-    [Tags]    NOPC-8    NOPC-30    Smoke    Computers    Desktops
+    [Tags]    NOPC-30    Smoke    Computers    Desktops
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open

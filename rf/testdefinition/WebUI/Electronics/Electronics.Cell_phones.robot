@@ -22,7 +22,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of "Cell_phones" page without login
     [Documentation]    Test direct link "Electronics" to "Cell_phones"
-    [Tags]    TA2-10    Smoke    Electronics    Cell_phones
+    [Tags]    NOPC-37    Smoke    Electronics    Cell_phones
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open

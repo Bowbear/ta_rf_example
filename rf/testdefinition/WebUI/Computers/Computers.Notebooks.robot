@@ -24,7 +24,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of "Notebooks" page without login
     [Documentation]    Test direct link "Computer" to "Notebooks"
-    [Tags]    NOPC-8    NOPC-31    Smoke    Computers    Notebooks
+    [Tags]    NOPC-31    Smoke    Computers    Notebooks
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open

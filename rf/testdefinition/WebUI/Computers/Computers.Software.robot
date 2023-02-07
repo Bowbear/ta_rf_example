@@ -22,7 +22,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of "Software" page without login
     [Documentation]    Test direct link "Computer" to "Software"
-    [Tags]    NOPC-8    NOPC-32    Smoke    Computers    Software
+    [Tags]    NOPC-32    Smoke    Computers    Software
     I open the HomePage
     I click on "Computers" directly
     I verify if "Computers" page is open

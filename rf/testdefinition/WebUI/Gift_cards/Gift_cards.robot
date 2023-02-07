@@ -21,7 +21,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing of link "Gift cards" without login
     [Documentation]    Test link to "Gift cards"
-    [Tags]    TA2-39    Smoke    Gift_cards
+    [Tags]    NOPC-55    Smoke    Gift_cards
     I open the HomePage
     I click on "Gift cards" directly
     I verify if "Gift cards" page is open

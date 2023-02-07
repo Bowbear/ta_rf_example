@@ -21,7 +21,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing of link "Books" without login
     [Documentation]    Test link to "Books"
-    [Tags]    TA2-38    Smoke    Books
+    [Tags]    NOPC-53    Smoke    Books
     I open the HomePage
     I click on "Books" directly
     I verify if "Books" page is open

@@ -22,7 +22,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of "Camera and photo" page without login
     [Documentation]    Test direct link "Electronics" to "Camera and photo"
-    [Tags]    TA2-9    Smoke    Electronics    Camera_n_photo
+    [Tags]    NOPC-36    Smoke    Electronics    Camera_n_photo
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open

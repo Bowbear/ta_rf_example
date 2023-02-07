@@ -28,7 +28,7 @@ ${CUSTOM} =    CUSTOM_1
 [Robot] Testing the availability of the "Computers" page without login
     [Documentation]    Test direct link "Computers"
     ...    $Env:UMG='TEST'
-    [Tags]    NOPC-8    NOPC-29    Smoke    Computers
+    [Tags]    NOPC-29    Smoke    Computers
     # ${UMG}    get environment variable    %{UMG}
     log    ${UMGEBUNG.%{UMG}}
     I open the HomePage

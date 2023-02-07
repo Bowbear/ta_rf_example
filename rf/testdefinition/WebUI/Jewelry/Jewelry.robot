@@ -22,7 +22,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing of link "Jewelry" without login
     [Documentation]    Test link to "Jewelry"
-    [Tags]    TA2-36    Smoke    Jewelry
+    [Tags]    NOPC-54    Smoke    Jewelry
     I open the HomePage
     I click on "Jewelry" directly
     I verify if "Jewelry" page is open

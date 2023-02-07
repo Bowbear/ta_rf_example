@@ -21,7 +21,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of "Apparel" page without login
     [Documentation]    Test direct link "Apparel" to "Accessories"
-    [Tags]    TA2-35    Smoke    Apparel
+    [Tags]    NOPC-44    Smoke    Apparel
     I open the HomePage
     I click on "Apparel" directly
     I verify if "Apparel" page is open

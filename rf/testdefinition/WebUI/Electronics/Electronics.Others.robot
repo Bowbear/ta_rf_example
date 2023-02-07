@@ -22,7 +22,7 @@ Test Teardown    End Web Test
 
 [Robot] Testing availability of "Others" page without login
     [Documentation]    Test direct link "Electronics" to "Others"
-    [Tags]    TA2-11    Smoke    Electronics    Others
+    [Tags]    NOPC-45    Smoke    Electronics    Others
     I open the HomePage
     I click on "Electronics" directly
     I verify if "Electronics" page is open
