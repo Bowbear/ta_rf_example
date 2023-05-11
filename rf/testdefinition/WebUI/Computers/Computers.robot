@@ -5,6 +5,7 @@ Resource    ..${/}..${/}..${/}resource${/}Home${/}HomeApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Computers${/}ComputersApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Computers${/}Desktops${/}DesktopsApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Common.robot
+Resource    ..${/}..${/}..${/}resource${/}Login${/}LoginApp.robot
 Resource    ..${/}..${/}..${/}resource${/}Configuration.robot
 Resource    ..${/}..${/}..${/}resource${/}DataManager.robot
 
@@ -22,6 +23,7 @@ Test Teardown    End Web Test
 
 *** Variables ***
 ${CUSTOM} =    CUSTOM_1
+${USER} =      USER_1
 
 *** Test Cases ***
 
@@ -35,3 +37,14 @@ ${CUSTOM} =    CUSTOM_1
     I click on "Computers" directly
     I verify if "Computers" page is open
 
+[Robot] Testing the availability of the "Computers" page with login
+    [Documentation]    Test direct link "Computers"
+    ...    $Env:UMG='TEST'
+    [Tags]    NOPC-x    Smoke    Computers
+    # ${UMG}    get environment variable    %{UMG}
+    # log    ${UMGEBUNG.%{UMS}}
+    I open the HomePage
+    Log in to the site    ${USERDATA}[${USER}]
+    I click on "Computers" directly
+    I verify if "Computers" page is open
+    Log out the site
